@@ -8,8 +8,9 @@ import org.perekladov.dto.Product;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-public class ParserKsk{
+public class ParserKsk implements Parser{
 
+    @Override
     public Product readByUrl(String url) {
         Document doc = null;
         Product product = new Product();

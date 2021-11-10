@@ -8,13 +8,20 @@ import org.perekladov.dto.Product;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-public class ParserOma {
+public class ParserOma implements Parser{
 
+    private final String cityId;
+
+    public ParserOma(String cityId) {
+        this.cityId = cityId;
+    }
+
+    @Override
     public Product readByUrl(String url) {
         Document doc = null;
         Product product = new Product();
         try {
-            doc = Jsoup.connect(url + "?CITY_ID=14471")
+            doc = Jsoup.connect(url + "?CITY_ID=14" + cityId)
                     .userAgent("Chrome/91.0.4472.77")
                     .referrer("http://www.google.com")
                     .get();

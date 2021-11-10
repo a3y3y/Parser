@@ -4,6 +4,7 @@ import org.perekladov.dto.Product;
 import org.perekladov.excel.Excel;
 import org.perekladov.repository.ProductRepository;
 import org.perekladov.site.ParserKsk;
+import org.perekladov.site.ParserOma;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class ProductService {
 
     Excel excel = new Excel();
     ProductRepository productRepository = new ProductRepository();
-    ParserKsk parserKsk = new ParserKsk();
+    ParserOma parserKsk = new ParserOma();
 
     public void updateXlsxWithDatabaseAndSite(File file) {
         List<Product> productsFromXlsx = excel.readXlsxFile(file);

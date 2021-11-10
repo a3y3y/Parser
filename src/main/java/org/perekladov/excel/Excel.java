@@ -1,8 +1,8 @@
 package org.perekladov.excel;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.perekladov.dto.Product;
@@ -73,6 +73,17 @@ public class Excel {
             FileInputStream inputStream = new FileInputStream(file);
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
+            CellStyle style = workbook.createCellStyle();
+            XSSFFont font= workbook.createFont();
+            font.setBold(true);
+            font.setFontHeight(10);
+            font.setFontName("Arial");
+            style.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+            style.setFont(font);
+            style.setBorderBottom(BorderStyle.THIN);
+            style.setBorderTop(BorderStyle.THIN);
+            style.setBorderRight(BorderStyle.THIN);
+            style.setBorderLeft(BorderStyle.THIN);
             for (Product product : productList) {
                 Row row = sheet.getRow(product.getRowNumberXlsx());
                 if(!(product.getUrl() == null || "".equals(product.getUrl()))) {
@@ -83,16 +94,24 @@ public class Excel {
                     }
                     if (product.getDiscountPriceKsk() != null) {
                         if (row.getCell(6) == null) {
-                            row.createCell(6).setCellValue(product.getDiscountPriceKsk().doubleValue());
+                            Cell cell = row.createCell(6);
+                            cell.setCellValue(product.getDiscountPriceKsk().doubleValue());
+                            cell.setCellStyle(style);
                         } else {
-                            row.getCell(6).setCellValue(product.getDiscountPriceKsk().doubleValue());
+                            Cell cell = row.getCell(6);
+                            cell.setCellValue(product.getDiscountPriceKsk().doubleValue());
+                            cell.setCellStyle(style);
                         }
                     }
                     if (product.getPriceKsk() != null) {
                         if (row.getCell(7) == null) {
-                            row.createCell(7).setCellValue(product.getPriceKsk().doubleValue());
+                            Cell cell = row.createCell(7);
+                            cell.setCellValue(product.getPriceKsk().doubleValue());
+                            cell.setCellStyle(style);
                         } else {
-                            row.getCell(7).setCellValue(product.getPriceKsk().doubleValue());
+                            Cell cell = row.getCell(7);
+                            cell.setCellValue(product.getPriceKsk().doubleValue());
+                            cell.setCellStyle(style);
                         }
                     }
                     if(product.getAvailability() != null) {
@@ -102,37 +121,6 @@ public class Excel {
             }
             inputStream.close();
             FileOutputStream fileOut = new FileOutputStream(file);
-            workbook.write(fileOut);
-            fileOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-
-    public void updateAll(String fileName, List<Product> productList, int priceCell, int discountCell) {
-        try {
-            FileInputStream inputStream = new FileInputStream(fileName);
-            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-            Sheet sheet = workbook.getSheetAt(0);
-            for (Product product : productList) {
-                Row row = sheet.getRow(product.getRowNumberXlsx());
-                if (row.getCell(discountCell) == null) {
-                    row.createCell(discountCell).setCellValue(product.getDiscountPrice().doubleValue());
-                } else {
-                    row.getCell(discountCell).setCellValue(product.getDiscountPrice().doubleValue());
-                }
-                if (row.getCell(priceCell) == null) {
-                    row.createCell(priceCell).setCellValue(product.getPrice().doubleValue());
-                } else {
-                    row.getCell(priceCell).setCellValue(product.getPrice().doubleValue());
-                }
-                row.createCell(8).setCellValue(product.getAvailability());
-            }
-            inputStream.close();
-            FileOutputStream fileOut = new FileOutputStream(fileName);
             workbook.write(fileOut);
             fileOut.close();
         } catch (IOException e) {

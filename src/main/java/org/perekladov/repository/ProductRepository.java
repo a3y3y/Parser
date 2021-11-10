@@ -25,7 +25,8 @@ public class ProductRepository {
 
     public boolean createTable() {
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + schema + ".products " +
-                "(art INT, name VARCHAR(250), url VARCHAR(250))";
+                "(art INT, name VARCHAR(250), url VARCHAR(250)); CREATE INDEX art_index ON " +
+                schema + ".products(art)";
         try (PreparedStatement stmt = getConnection().prepareStatement(createTableStatement)) {
             if (stmt.execute()) {
                 return true;
@@ -49,7 +50,7 @@ public class ProductRepository {
     }
 
     public boolean save(Product product) {
-        String saveStatement = "INSERT INTO "+ schema + ".products (art, name, url) VALUES (?,?,?)";
+        String saveStatement = "INSERT INTO " + schema + ".products (art, name, url) VALUES (?,?,?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(saveStatement)) {
             stmt.setInt(1, product.getArt());
             stmt.setString(2, product.getName());

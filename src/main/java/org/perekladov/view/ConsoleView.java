@@ -37,7 +37,7 @@ public class ConsoleView {
             System.out.println("В папке файлы нечего обрабатывать.");
         } else {
             for (int i = 0; i < matchingFiles.length; i++) {
-                System.out.println("Обрабатываю файл " + matchingFiles[i].getName());
+                System.out.println("\nОбрабатываю файл " + matchingFiles[i].getName());
                 productService.updateXlsxWithDatabaseAndSite(matchingFiles[i]);
             }
             System.out.println("\nВсе вроде готово, че ждешь?");

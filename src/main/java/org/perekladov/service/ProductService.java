@@ -34,16 +34,18 @@ public class ProductService {
         List<Product> productsFromXlsx = excel.readXlsxFile(file);
         List<Product> updatedProducts = new ArrayList<>();
         int listSize = productsFromXlsx.size();
-        int x = listSize / 25;
+        int x = listSize / 30;
         double i = 1;
+        int r = 1;
         for (Product product : productsFromXlsx) {
-            if (isUrlCorrect(product, productRepository)) {
-                Product databaseProduct = productRepository.findByArt(product.getArt());
-                compareProductWithDatabaseAndAddToList(product, databaseProduct, updatedProducts);
-            }
+            Product databaseProduct = productRepository.findByArt(product.getArt());
+            compareProductWithDatabaseAndAddToList(product, databaseProduct, updatedProducts);
             double d = i / x;
             if (isInteger(d) && (1 <= d || d <= 10)) {
-                System.out.print("=");
+                if (r <= 30) {
+                    System.out.print("=");
+                    r++;
+                }
             }
             i++;
         }
@@ -69,7 +71,7 @@ public class ProductService {
                                                         List<Product> updatedProducts) {
         String productUrl = product.getUrl();
         if (databaseProduct == null) {
-            if (productUrl != null && !"".equals(productUrl)) {
+            if (productUrl != null && !"".equals(productUrl) && isUrlCorrect(product, productRepository)) {
                 productRepository.save(product);
                 addKskPricesToProduct(product);
             }
@@ -100,7 +102,7 @@ public class ProductService {
     }
 
     private boolean isUrlCorrect(Product product, ProductRepository productRepository) {
-        if(product.getUrl() != null) {
+        if (product.getUrl() != null) {
             if (product.getUrl().contains(productRepository.getSchema() + ".by")) {
                 return true;
             } else {

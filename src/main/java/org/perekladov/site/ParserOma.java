@@ -30,9 +30,7 @@ public class ParserOma implements Parser{
             return product;
         }
         Elements elements = doc.getElementsByClass("price-and-avail");
-        if (elements.size() == 0) {
-            return product;
-        } else {
+        if (elements.size() != 0) {
             String prod = elements.first().toString();
             Document prod1 = Jsoup.parse(prod);
             Elements el = prod1.getElementsByClass("product-info-box_price strong-price 1");
@@ -48,9 +46,12 @@ public class ParserOma implements Parser{
                     priceElement = el1.first().text().replaceAll("/.+", "")
                             .trim().replaceAll(",", ".");
                     product.setDiscountPriceKsk(new BigDecimal(priceElement));
+                    String oldPrice = prod1.getElementsByClass("price__old").first()
+                            .text().replaceAll(",", ".");
+                    product.setPriceKsk(new BigDecimal(oldPrice));
                 }
             }
-            return product;
         }
+        return product;
     }
 }

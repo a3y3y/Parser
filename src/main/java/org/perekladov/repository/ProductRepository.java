@@ -25,7 +25,7 @@ public class ProductRepository {
 
     public boolean createTable() {
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + schema + ".products " +
-                "(art INT, name VARCHAR(250), url VARCHAR(250)); CREATE INDEX art_index ON " +
+                "(art INT, name VARCHAR(250), url VARCHAR(250)); CREATE INDEX IF NOT EXISTS art_index ON " +
                 schema + ".products(art)";
         try (PreparedStatement stmt = getConnection().prepareStatement(createTableStatement)) {
             if (stmt.execute()) {

@@ -41,28 +41,30 @@ public class Excel {
 
             for (int rowNumber = 0; rowNumber <= sheet.getLastRowNum(); rowNumber++) {
                 Row row = sheet.getRow(rowNumber);
-                if (row != null && row.getCell(1) != null &&
-                        row.getCell(1).getStringCellValue().matches("[1-9]{1}[0-9]{3,}")) {
-                    Product product = new Product();
-                    if (row.getCell(0) != null) {
-                        product.setUrl(row.getCell(0).getStringCellValue());
+                if (row != null && row.getCell(1) != null) {
+                    row.getCell(1).setCellType(CellType.STRING);
+                    if (row.getCell(1).getStringCellValue().matches("[1-9]{1}[0-9]{3,}")) {
+                        Product product = new Product();
+                        if (row.getCell(0) != null) {
+                            product.setUrl(row.getCell(0).getStringCellValue());
+                        }
+                        try {
+                            product.setArt(Integer.parseInt(row.getCell(1).getStringCellValue()));
+                        } catch (NumberFormatException e) {
+                            e.getMessage();
+                        }
+                        if (row.getCell(priceCellNumber) != null) {
+                            product.setPrice(BigDecimal.valueOf((row.getCell(priceCellNumber).getNumericCellValue())));
+                        }
+                        if (row.getCell(discountCellNumber) != null) {
+                            product.setDiscountPrice(BigDecimal.valueOf((row.getCell(discountCellNumber).getNumericCellValue())));
+                        }
+                        if (row.getCell(2) != null) {
+                            product.setName(row.getCell(2).getStringCellValue());
+                        }
+                        product.setRowNumberXlsx(row.getRowNum());
+                        productList.add(product);
                     }
-                    try {
-                        product.setArt(Integer.parseInt(row.getCell(1).getStringCellValue()));
-                    } catch (NumberFormatException e) {
-                        e.getMessage();
-                    }
-                    if (row.getCell(priceCellNumber) != null) {
-                        product.setPrice(BigDecimal.valueOf((row.getCell(priceCellNumber).getNumericCellValue())));
-                    }
-                    if (row.getCell(discountCellNumber) != null) {
-                        product.setDiscountPrice(BigDecimal.valueOf((row.getCell(discountCellNumber).getNumericCellValue())));
-                    }
-                    if (row.getCell(2) != null) {
-                        product.setName(row.getCell(2).getStringCellValue());
-                    }
-                    product.setRowNumberXlsx(row.getRowNum());
-                    productList.add(product);
                 }
             }
         } catch (IOException e) {
@@ -139,7 +141,7 @@ public class Excel {
         }
     }
 
-    private CellStyle getStyle (short color, XSSFWorkbook workbook){
+    private CellStyle getStyle(short color, XSSFWorkbook workbook) {
         CellStyle style = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
         font.setBold(true);

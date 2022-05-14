@@ -32,14 +32,14 @@ public class ParserKsk implements Parser{
         Element discountPriceElementSale = prod1.getElementsByClass("price-orange").first();
         Element priceElement = prod1.getElementsByClass("price-gray").first();
         Element discountPriceElement = prod1.getElementsByClass("price-black").first();
-        Element pd = doc.getElementsByClass("col-sm-8 col-xl-8").first();
+        Element pd = doc.getElementsByClass("name-h1 sort").first();
         Document doc1 = Jsoup.parse(pd.toString());
         Element productNameElement = doc1.select("h1").first();
         Element stock = doc.getElementsByClass("prod-stock").first();
         Document stock1 = Jsoup.parse(stock.toString());
-        Element available = stock1.getElementsByClass("fa fa-check-circle-o green").first();
+        Element available = stock1.getElementsByClass("fa ksk-icon-circle-check green").first();
         Element unavailable = stock1.getElementsByClass("fa fa-times-circle-o red").first();
-        Element order = stock1.getElementsByClass("fa fa-clock-o orange").first();
+        Element order = stock1.getElementsByClass("fa ksk-icon-clock orange").first();
         if (available != null) {
             product.setAvailability("есть");
         } else if (unavailable != null) {

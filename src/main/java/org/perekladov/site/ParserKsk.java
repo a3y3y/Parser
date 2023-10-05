@@ -32,7 +32,7 @@ public class ParserKsk implements Parser{
         Element discountPriceElementSale = prod1.getElementsByClass("price-orange").first();
         Element priceElement = prod1.getElementsByClass("price-gray").first();
         Element discountPriceElement = prod1.getElementsByClass("price-black").first();
-        Element pd = doc.getElementsByClass("name-h1 sort").first();
+        Element pd = doc.getElementsByClass("name-h1").first();
         Document doc1 = Jsoup.parse(pd.toString());
         Element productNameElement = doc1.select("h1").first();
         Element stock = doc.getElementsByClass("prod-stock").first();

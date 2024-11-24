@@ -3,13 +3,11 @@ package org.perekladov.excel;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.perekladov.dto.Product;
 
-import javax.swing.text.Style;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -80,6 +78,7 @@ public class Excel {
             Sheet sheet = workbook.getSheetAt(0);
             CellStyle style = getStyle(HSSFColor.HSSFColorPredefined.BLACK.getIndex(), workbook);
             CellStyle styleRed = getStyle(HSSFColor.HSSFColorPredefined.RED.getIndex(), workbook);
+            CellStyle styleGreen = getStyle(HSSFColor.HSSFColorPredefined.GREEN.getIndex(), workbook);
             for (Product product : productList) {
                 Row row = sheet.getRow(product.getRowNumberXlsx());
                 if (!(product.getUrl() == null || "".equals(product.getUrl()))) {
@@ -93,6 +92,8 @@ public class Excel {
                             Cell cell = row.createCell(6);
                             if (product.getDiscountPrice().doubleValue() > product.getDiscountPriceKsk().doubleValue()) {
                                 cell.setCellStyle(styleRed);
+                            } else if (product.getDiscountPrice().doubleValue() < product.getDiscountPriceKsk().doubleValue()) {
+                                cell.setCellStyle(styleGreen);
                             } else {
                                 cell.setCellStyle(style);
                             }
@@ -102,6 +103,8 @@ public class Excel {
                             Cell cell = row.getCell(6);
                             if (product.getDiscountPrice().doubleValue() > product.getDiscountPriceKsk().doubleValue()) {
                                 cell.setCellStyle(styleRed);
+                            } else if (product.getDiscountPrice().doubleValue() < product.getDiscountPriceKsk().doubleValue()) {
+                                cell.setCellStyle(styleGreen);
                             } else {
                                 cell.setCellStyle(style);
                             }
@@ -113,6 +116,8 @@ public class Excel {
                             Cell cell = row.createCell(7);
                             if (product.getPrice().doubleValue() > product.getPriceKsk().doubleValue()) {
                                 cell.setCellStyle(styleRed);
+                            } else if (product.getPrice().doubleValue() < product.getPriceKsk().doubleValue()) {
+                                cell.setCellStyle(styleGreen);
                             } else {
                                 cell.setCellStyle(style);
                             }
@@ -121,6 +126,8 @@ public class Excel {
                             Cell cell = row.getCell(7);
                             if (product.getPrice().doubleValue() > product.getPriceKsk().doubleValue()) {
                                 cell.setCellStyle(styleRed);
+                            } else if (product.getPrice().doubleValue() < product.getPriceKsk().doubleValue()) {
+                                cell.setCellStyle(styleGreen);
                             } else {
                                 cell.setCellStyle(style);
                             }

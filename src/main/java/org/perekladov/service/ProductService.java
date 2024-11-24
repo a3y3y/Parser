@@ -71,12 +71,12 @@ public class ProductService {
                                                         List<Product> updatedProducts) {
         String productUrl = product.getUrl();
         if (databaseProduct == null) {
-            if (productUrl != null && !"".equals(productUrl) && isUrlCorrect(product, productRepository)) {
+            if (productUrl != null && !productUrl.matches("\\d+|^$") && isUrlCorrect(product, productRepository)) {
                 productRepository.save(product);
                 addKskPricesToProduct(product);
             }
         } else {
-            if (productUrl == null || "".equals(productUrl)) {
+            if (productUrl == null || productUrl.matches("\\d+|^$")) {
                 product.setUrl(databaseProduct.getUrl());
             } else {
                 if (!productUrl.equals(databaseProduct.getUrl())) {

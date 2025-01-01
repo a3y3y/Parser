@@ -2,6 +2,7 @@ package org.perekladov.view;
 
 import org.perekladov.service.ProductService;
 import org.perekladov.site.Parser;
+import org.perekladov.site.ParserBild;
 import org.perekladov.site.ParserKsk;
 import org.perekladov.site.ParserOma;
 
@@ -14,6 +15,7 @@ public class ConsoleView {
             System.out.println("Что будем мониторить?");
             System.out.println("1. KSK");
             System.out.println("2. OMA");
+            System.out.println("3. Билд");
             Parser parser = null;
             Scanner sc = new Scanner(System.in);
             String value = sc.nextLine();
@@ -24,8 +26,12 @@ public class ConsoleView {
             if ("2".equals(value)) {
                 System.out.println("Будем мониторить ОМА");
                 return new ParserOma("14471");
+            }
+            if ("3".equals(value)) {
+                System.out.println("Будем мониторить Билд");
+                return new ParserBild();
             } else {
-                System.out.println("Введи 1 или 2, что непонятно?");
+                System.out.println("Введи 1, 2 или 3 что непонятно?");
             }
         }
     }
@@ -36,9 +42,9 @@ public class ConsoleView {
         if (matchingFiles == null) {
             System.out.println("В папке файлы нечего обрабатывать.");
         } else {
-            for (int i = 0; i < matchingFiles.length; i++) {
-                System.out.println("\nОбрабатываю файл " + matchingFiles[i].getName());
-                productService.updateXlsxWithDatabaseAndSite(matchingFiles[i]);
+            for (File matchingFile : matchingFiles) {
+                System.out.println("\nОбрабатываю файл " + matchingFile.getName());
+                productService.updateXlsxWithDatabaseAndSite(matchingFile);
             }
             System.out.println("\nВсе вроде готово, че ждешь?");
             System.out.println("\nИли продолжим?");

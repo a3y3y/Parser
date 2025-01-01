@@ -18,7 +18,7 @@ public class ParserOma implements Parser{
 
     @Override
     public Product readByUrl(String url) {
-        Document doc = null;
+        Document doc;
         Product product = new Product();
         try {
             doc = Jsoup.connect(url + "?CITY_ID=14" + cityId)
@@ -26,7 +26,6 @@ public class ParserOma implements Parser{
                     .referrer("http://www.google.com")
                     .get();
         } catch (IOException | IllegalArgumentException e) {
-            e.getMessage();
             return product;
         }
         Elements elements = doc.getElementsByClass("price-and-avail");
@@ -35,20 +34,20 @@ public class ParserOma implements Parser{
             Document prod1 = Jsoup.parse(prod);
             Elements el = prod1.getElementsByClass("product-info-box_price strong-price 1");
 
-            String priceElement = null;
+            String priceElement;
             if (el.size() > 0) {
                 priceElement = el.first().text().replaceAll("/.+", "")
                         .trim().replaceAll(",", ".");
-                product.setPriceKsk(new BigDecimal(priceElement));
+                product.setPriceCompetitor(new BigDecimal(priceElement));
             } else {
                 Elements el1 = prod1.getElementsByClass("product-info-box_price strong-price red");
                 if (el1.size() > 0) {
                     priceElement = el1.first().text().replaceAll("/.+", "")
                             .trim().replaceAll(",", ".");
-                    product.setDiscountPriceKsk(new BigDecimal(priceElement));
+                    product.setDiscountPriceCompetitor(new BigDecimal(priceElement));
                     String oldPrice = prod1.getElementsByClass("price__old").first()
                             .text().replaceAll(",", ".");
-                    product.setPriceKsk(new BigDecimal(oldPrice));
+                    product.setPriceCompetitor(new BigDecimal(oldPrice));
                 }
             }
         }

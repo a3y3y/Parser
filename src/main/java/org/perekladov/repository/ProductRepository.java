@@ -14,9 +14,11 @@ import static org.perekladov.util.AbstractConnection.getConnection;
 public class ProductRepository {
 
     private String schema;
+    private String formattedSchema;
 
     public ProductRepository(String schema) {
         this.schema = schema;
+        this.formattedSchema = schema.replaceAll("-", "");
     }
 
     public String getSchema() {
@@ -24,9 +26,9 @@ public class ProductRepository {
     }
 
     public boolean createTable() {
-        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + schema + ".products " +
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + formattedSchema + ".products " +
                 "(art INT, name VARCHAR(250), url VARCHAR(250)); CREATE INDEX IF NOT EXISTS art_index ON " +
-                schema + ".products(art)";
+                formattedSchema + ".products(art)";
         try (PreparedStatement stmt = getConnection().prepareStatement(createTableStatement)) {
             if (stmt.execute()) {
                 return true;
@@ -38,7 +40,7 @@ public class ProductRepository {
     }
 
     public boolean createSchema() {
-        String createTableStatement = "CREATE SCHEMA IF NOT EXISTS " + schema;
+        String createTableStatement = "CREATE SCHEMA IF NOT EXISTS " + formattedSchema;
         try (PreparedStatement stmt = getConnection().prepareStatement(createTableStatement)) {
             if (stmt.execute()) {
                 return true;
@@ -50,7 +52,7 @@ public class ProductRepository {
     }
 
     public boolean save(Product product) {
-        String saveStatement = "INSERT INTO " + schema + ".products (art, name, url) VALUES (?,?,?)";
+        String saveStatement = "INSERT INTO " + formattedSchema + ".products (art, name, url) VALUES (?,?,?)";
         try (PreparedStatement stmt = getConnection().prepareStatement(saveStatement)) {
             stmt.setInt(1, product.getArt());
             stmt.setString(2, product.getName());
@@ -66,7 +68,7 @@ public class ProductRepository {
     }
 
     public Product findByArt(int art) {
-        String findByArtStatement = "SELECT*FROM " + schema + ".products WHERE art=?";
+        String findByArtStatement = "SELECT*FROM " + formattedSchema + ".products WHERE art=?";
         Product product = null;
         try (PreparedStatement stmt = getConnection().prepareStatement(findByArtStatement)) {
             stmt.setInt(1, art);
@@ -86,7 +88,7 @@ public class ProductRepository {
     }
 
     public Product update(int art, Product product) {
-        String updateStatement = "UPDATE " + schema + ".products SET url=?, name=? WHERE art=?";
+        String updateStatement = "UPDATE " + formattedSchema + ".products SET url=?, name=? WHERE art=?";
         try (PreparedStatement stmt = getConnection().prepareStatement(updateStatement)) {
             stmt.setString(1, product.getUrl());
             stmt.setString(2, product.getName());
@@ -99,7 +101,7 @@ public class ProductRepository {
     }
 
     public List<Product> findAll() {
-        String findAllStatement = "SELECT*FROM " + schema + ".products";
+        String findAllStatement = "SELECT*FROM " + formattedSchema + ".products";
         List<Product> products = new ArrayList<>();
         try (PreparedStatement stmt = getConnection().prepareStatement(findAllStatement)) {
             stmt.execute();

@@ -4,6 +4,7 @@ import org.perekladov.dto.Product;
 import org.perekladov.excel.Excel;
 import org.perekladov.repository.ProductRepository;
 import org.perekladov.site.Parser;
+import org.perekladov.site.ParserBild;
 import org.perekladov.site.ParserKsk;
 import org.perekladov.site.ParserOma;
 
@@ -24,6 +25,9 @@ public class ProductService {
         }
         if (parser instanceof ParserKsk) {
             this.productRepository = new ProductRepository("ksk");
+        }
+        if (parser instanceof ParserBild) {
+            this.productRepository = new ProductRepository("bild-shop");
         }
         productRepository.createSchema();
         productRepository.createTable();
@@ -55,11 +59,7 @@ public class ProductService {
 
     public File[] getFilesList(String filesPath) {
         File f = new File(filesPath);
-        File[] matchingFiles = f.listFiles(new FilenameFilter() {
-            public boolean accept(File f, String name) {
-                return name.endsWith(".xlsx");
-            }
-        });
+        File[] matchingFiles = f.listFiles((f1, name) -> name.endsWith(".xlsx"));
         if (matchingFiles == null || matchingFiles.length == 0) {
             return null;
         } else {
@@ -73,7 +73,7 @@ public class ProductService {
         if (databaseProduct == null) {
             if (productUrl != null && !productUrl.matches("\\d+|^$") && isUrlCorrect(product, productRepository)) {
                 productRepository.save(product);
-                addKskPricesToProduct(product);
+                addCompetitorPricesToProduct(product);
             }
         } else {
             if (productUrl == null || productUrl.matches("\\d+|^$")) {
@@ -85,15 +85,15 @@ public class ProductService {
                     productRepository.update(databaseProduct.getArt(), databaseProduct);
                 }
             }
-            addKskPricesToProduct(product);
+            addCompetitorPricesToProduct(product);
         }
         updatedProducts.add(product);
     }
 
-    private void addKskPricesToProduct(Product product) {
+    private void addCompetitorPricesToProduct(Product product) {
         Product productKsk = parser.readByUrl(product.getUrl());
-        product.setPriceKsk(productKsk.getPriceKsk());
-        product.setDiscountPriceKsk(productKsk.getDiscountPriceKsk());
+        product.setPriceCompetitor(productKsk.getPriceCompetitor());
+        product.setDiscountPriceCompetitor(productKsk.getDiscountPriceCompetitor());
         product.setAvailability(productKsk.getAvailability());
     }
 
@@ -102,13 +102,7 @@ public class ProductService {
     }
 
     private boolean isUrlCorrect(Product product, ProductRepository productRepository) {
-        if (product.getUrl() != null) {
-            if (product.getUrl().contains(productRepository.getSchema() + ".by")) {
-                return true;
-            } else {
-                return false;
-            }
-        } else return false;
+        return product.getUrl() != null && product.getUrl().contains(productRepository.getSchema() + ".by");
     }
 
 }

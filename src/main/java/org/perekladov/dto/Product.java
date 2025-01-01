@@ -7,37 +7,26 @@ public class Product {
     private String name;
     private BigDecimal discountPrice;
     private BigDecimal price;
-    private BigDecimal discountPriceKsk;
-    private BigDecimal priceKsk;
+    private BigDecimal discountPriceCompetitor;
+    private BigDecimal priceCompetitor;
     private String availability = "";
     private int art;
     private int rowNumberXlsx;
 
-    public Product() {
+    public BigDecimal getDiscountPriceCompetitor() {
+        return discountPriceCompetitor;
     }
 
-    public Product(String url, String name, BigDecimal discountPrice, BigDecimal price, String availability) {
-        this.url = url;
-        this.name = name;
-        this.discountPrice = discountPrice;
-        this.price = price;
-        this.availability = availability;
+    public void setDiscountPriceCompetitor(BigDecimal discountPriceCompetitor) {
+        this.discountPriceCompetitor = discountPriceCompetitor;
     }
 
-    public BigDecimal getDiscountPriceKsk() {
-        return discountPriceKsk;
+    public BigDecimal getPriceCompetitor() {
+        return priceCompetitor;
     }
 
-    public void setDiscountPriceKsk(BigDecimal discountPriceKsk) {
-        this.discountPriceKsk = discountPriceKsk;
-    }
-
-    public BigDecimal getPriceKsk() {
-        return priceKsk;
-    }
-
-    public void setPriceKsk(BigDecimal priceKsk) {
-        this.priceKsk = priceKsk;
+    public void setPriceCompetitor(BigDecimal priceCompetitor) {
+        this.priceCompetitor = priceCompetitor;
     }
 
     public String getUrl() {
@@ -103,8 +92,8 @@ public class Product {
                 ", name='" + name + '\'' +
                 ", discountPrice=" + discountPrice +
                 ", price=" + price +
-                ", discountPriceKsk=" + discountPriceKsk +
-                ", priceKsk=" + priceKsk +
+                ", discountPriceCompetitor=" + discountPriceCompetitor +
+                ", priceCompetitor=" + priceCompetitor +
                 ", availability='" + availability + '\'' +
                 ", art=" + art +
                 ", rowNumberXlsx=" + rowNumberXlsx +

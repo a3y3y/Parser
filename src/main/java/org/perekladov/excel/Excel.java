@@ -49,7 +49,7 @@ public class Excel {
                         try {
                             product.setArt(Integer.parseInt(row.getCell(1).getStringCellValue()));
                         } catch (NumberFormatException e) {
-                            e.getMessage();
+                            System.out.println("Error parsing value: " + row.getCell(1).getStringCellValue());
                         }
                         if (row.getCell(priceCellNumber) != null) {
                             product.setPrice(BigDecimal.valueOf((row.getCell(priceCellNumber).getNumericCellValue())));
@@ -66,7 +66,7 @@ public class Excel {
                 }
             }
         } catch (IOException e) {
-            e.getMessage();
+            e.printStackTrace();
         }
         return productList;
     }
@@ -87,51 +87,51 @@ public class Excel {
                     } else {
                         row.getCell(0).setCellValue(product.getUrl());
                     }
-                    if (product.getDiscountPriceKsk() != null) {
+                    if (product.getDiscountPriceCompetitor() != null) {
                         if (row.getCell(6) == null) {
                             Cell cell = row.createCell(6);
-                            if (product.getDiscountPrice().doubleValue() > product.getDiscountPriceKsk().doubleValue()) {
+                            if (product.getDiscountPrice().doubleValue() > product.getDiscountPriceCompetitor().doubleValue()) {
                                 cell.setCellStyle(styleRed);
-                            } else if (product.getDiscountPrice().doubleValue() < product.getDiscountPriceKsk().doubleValue()) {
+                            } else if (product.getDiscountPrice().doubleValue() < product.getDiscountPriceCompetitor().doubleValue()) {
                                 cell.setCellStyle(styleGreen);
                             } else {
                                 cell.setCellStyle(style);
                             }
-                            cell.setCellValue(product.getDiscountPriceKsk().doubleValue());
+                            cell.setCellValue(product.getDiscountPriceCompetitor().doubleValue());
 
                         } else {
                             Cell cell = row.getCell(6);
-                            if (product.getDiscountPrice().doubleValue() > product.getDiscountPriceKsk().doubleValue()) {
+                            if (product.getDiscountPrice().doubleValue() > product.getDiscountPriceCompetitor().doubleValue()) {
                                 cell.setCellStyle(styleRed);
-                            } else if (product.getDiscountPrice().doubleValue() < product.getDiscountPriceKsk().doubleValue()) {
+                            } else if (product.getDiscountPrice().doubleValue() < product.getDiscountPriceCompetitor().doubleValue()) {
                                 cell.setCellStyle(styleGreen);
                             } else {
                                 cell.setCellStyle(style);
                             }
-                            cell.setCellValue(product.getDiscountPriceKsk().doubleValue());
+                            cell.setCellValue(product.getDiscountPriceCompetitor().doubleValue());
                         }
                     }
-                    if (product.getPriceKsk() != null) {
+                    if (product.getPriceCompetitor() != null) {
                         if (row.getCell(7) == null) {
                             Cell cell = row.createCell(7);
-                            if (product.getPrice().doubleValue() > product.getPriceKsk().doubleValue()) {
+                            if (product.getPrice().doubleValue() > product.getPriceCompetitor().doubleValue()) {
                                 cell.setCellStyle(styleRed);
-                            } else if (product.getPrice().doubleValue() < product.getPriceKsk().doubleValue()) {
+                            } else if (product.getPrice().doubleValue() < product.getPriceCompetitor().doubleValue()) {
                                 cell.setCellStyle(styleGreen);
                             } else {
                                 cell.setCellStyle(style);
                             }
-                            cell.setCellValue(product.getPriceKsk().doubleValue());
+                            cell.setCellValue(product.getPriceCompetitor().doubleValue());
                         } else {
                             Cell cell = row.getCell(7);
-                            if (product.getPrice().doubleValue() > product.getPriceKsk().doubleValue()) {
+                            if (product.getPrice().doubleValue() > product.getPriceCompetitor().doubleValue()) {
                                 cell.setCellStyle(styleRed);
-                            } else if (product.getPrice().doubleValue() < product.getPriceKsk().doubleValue()) {
+                            } else if (product.getPrice().doubleValue() < product.getPriceCompetitor().doubleValue()) {
                                 cell.setCellStyle(styleGreen);
                             } else {
                                 cell.setCellStyle(style);
                             }
-                            cell.setCellValue(product.getPriceKsk().doubleValue());
+                            cell.setCellValue(product.getPriceCompetitor().doubleValue());
                         }
                     }
                     if (product.getAvailability() != null) {

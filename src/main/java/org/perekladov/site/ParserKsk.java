@@ -34,18 +34,13 @@ public class ParserKsk implements Parser{
         Element pd = doc.getElementsByClass("name-h1").first();
         Document doc1 = Jsoup.parse(pd.toString());
         Element productNameElement = doc1.select("h1").first();
-        Element stock = doc.getElementsByClass("prod-stock").first();
-        Document stock1 = Jsoup.parse(stock.toString());
-        Element available = stock1.getElementsByClass("fa ksk-icon-circle-check green").first();
-        Element unavailable = stock1.getElementsByClass("fa fa-times-circle-o red").first();
-        Element order = stock1.getElementsByClass("fa ksk-icon-clock orange").first();
-        if (available != null) {
-            product.setAvailability("есть");
-        } else if (unavailable != null) {
-            product.setAvailability("нет");
-        } else if (order != null) {
-            product.setAvailability("заказ");
+        Element cartButton = doc.getElementsByClass("flex button-prod button-cart").first();
+        String availability = "нет";
+        if (cartButton != null) {
+            Element span = cartButton.getElementsByTag("span").first();
+            availability = "В корзину".equals(span.text()) ? "есть" : "заказ";
         }
+        product.setAvailability(availability);
         product.setName(productNameElement.text());
         if(priceElementSale == null) {
             if (priceElement != null) {
